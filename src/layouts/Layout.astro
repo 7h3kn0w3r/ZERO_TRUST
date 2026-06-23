@@ -1,0 +1,158 @@
+---
+import '../styles/global.css';
+import LoadingScreen from '../components/LoadingScreen.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title = "Noir Trace // Developer & Security Researcher Portfolio",
+  description = "Minimalist and professional security research writeups, projects, and development portfolio.",
+  image = "/images/default-og.svg",
+  canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href,
+} = Astro.props;
+
+// جلب الـ Base URL المبرمج في إعدادات astro.config.mjs تلقائياً
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <link rel="preload" href={`${baseUrl}fonts/inter-400.woff2`} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href={`${baseUrl}fonts/orbitron-500.woff2`} as="font" type="font/woff2" crossorigin="anonymous" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url.origin)} />
+    
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url.origin)} />
+    
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+    
+    <link rel="alternate" type="application/rss+xml" title="Noir Trace Writeups RSS Feed" href={`${baseUrl}rss.xml`} />
+    
+    <script is:inline>
+      (function() {
+        try {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.classList.add('skip-intro');
+            return;
+          }
+          const seen = localStorage.getItem('noir_trace_seen_intro');
+          if (seen === 'true') {
+            document.documentElement.classList.add('skip-intro');
+          }
+        } catch (e) {
+          // LocalStorage fallback (e.g. disabled cookies)
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-bg-dark text-white font-sans min-h-screen flex flex-col relative selection:bg-accent selection:text-white">
+    
+    <div class="scanlines"></div>
+    
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:outline-none focus:rounded-sm">
+      Skip to main content
+    </a>
+    
+    <LoadingScreen />
+    
+    <header class="sticky top-0 z-40 border-b border-neutral-900 bg-bg-dark/85 backdrop-blur-md">
+      <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        
+        <a href={baseUrl} class="flex items-center space-x-2 group">
+          <span class="font-display font-bold tracking-wider text-sm md:text-base text-glow text-white group-hover:text-accent transition-colors">
+            NOIR<span class="text-accent group-hover:text-white">_TRACE</span>
+          </span>
+          <span class="w-1.5 h-3.5 bg-accent header-pulse"></span>
+        </a>
+        
+        <nav class="hidden md:flex items-center space-x-6 text-xs uppercase tracking-wider font-sans">
+          <a href={baseUrl} class="text-neutral-400 hover:text-white transition-colors py-1">Home</a>
+          <a href={`${baseUrl}about`} class="text-neutral-400 hover:text-white transition-colors py-1">About</a>
+          <a href={`${baseUrl}projects`} class="text-neutral-400 hover:text-white transition-colors py-1">Projects</a>
+          <a href={`${baseUrl}blog`} class="text-neutral-400 hover:text-white transition-colors py-1">Writeups</a>
+          <a href={`${baseUrl}contact`} class="text-neutral-400 hover:text-white transition-colors py-1">Contact</a>
+          <a href={`${baseUrl}admin/`} class="border border-neutral-800 px-3 py-1 hover:border-accent hover:text-accent transition-all rounded-sm">CMS</a>
+        </nav>
+        
+        <button id="menu-toggle" class="md:hidden p-2 text-neutral-400 hover:text-white focus:outline-none" aria-label="Toggle Navigation Menu">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        
+      </div>
+      
+      <nav id="mobile-nav" class="hidden md:hidden border-t border-neutral-900 bg-bg-dark px-4 py-4 space-y-3 font-sans text-xs uppercase tracking-wider">
+        <a href={baseUrl} class="block text-neutral-400 hover:text-white py-1 transition-colors">Home</a>
+        <a href={`${baseUrl}about`} class="block text-neutral-400 hover:text-white py-1 transition-colors">About</a>
+        <a href={`${baseUrl}projects`} class="block text-neutral-400 hover:text-white py-1 transition-colors">Projects</a>
+        <a href={`${baseUrl}blog`} class="block text-neutral-400 hover:text-white py-1 transition-colors">Writeups</a>
+        <a href={`${baseUrl}contact`} class="block text-neutral-400 hover:text-white py-1 transition-colors">Contact</a>
+        <a href={`${baseUrl}admin/`} class="inline-block border border-neutral-800 px-3 py-1 hover:border-accent hover:text-accent transition-all rounded-sm">CMS</a>
+      </nav>
+    </header>
+    
+    <main id="main-content" class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 md:py-12 focus:outline-none">
+      <slot />
+    </main>
+    
+    <footer class="border-t border-neutral-950 bg-bg-dark py-8 text-text-secondary font-sans text-[10px]">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div>
+          <span>© {new Date().getFullYear()} NOIR_TRACE. ALL RIGHTS RESERVED.</span>
+          <span class="hidden md:inline mx-2 text-neutral-800">|</span>
+          <span class="text-neutral-600">FOOTPRINT: SECURE</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="https://github.com" class="hover:text-white transition-colors">GITHUB</a>
+          <span class="text-neutral-800">//</span>
+          <a href={`${baseUrl}rss.xml`} class="hover:text-white transition-colors">RSS</a>
+          <span class="text-neutral-800">//</span>
+          <a href={`${baseUrl}sitemap-index.xml`} class="hover:text-white transition-colors">SITEMAP</a>
+        </div>
+      </div>
+    </footer>
+    
+    <script is:inline>
+      (function() {
+        const toggle = document.getElementById('menu-toggle');
+        const nav = document.getElementById('mobile-nav');
+        const icon = document.getElementById('menu-icon');
+        
+        if (toggle && nav && icon) {
+          toggle.addEventListener('click', () => {
+            const isHidden = nav.classList.contains('hidden');
+            if (isHidden) {
+              nav.classList.remove('hidden');
+              icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+              nav.classList.add('hidden');
+              icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

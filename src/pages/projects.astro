@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    title: "Athena Core",
+    description: "A high-performance shellcode execution framework built in Rust, featuring dynamic call obscuring and memory encryption.",
+    tags: ["Rust", "Windows API", "Evasion", "Security"],
+    github: "https://github.com",
+  },
+  {
+    title: "PacketSentry",
+    description: "A lightweight network packet inspection daemon written in Go, focusing on raw socket parsing and real-time anomaly detection.",
+    tags: ["Go", "Linux", "Networking", "Security"],
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    title: "FirmAudit CLI",
+    description: "An automated firmware parsing and analysis tool chain that unpacks image blocks and scans binary paths for CVE vulnerabilities.",
+    tags: ["Python", "Binwalk", "Static Analysis", "IoT"],
+    github: "https://github.com",
+  },
+  {
+    title: "HydraInject",
+    description: "A proof-of-concept DLL injector demonstrating process injection via thread hijacking and asynchronous procedure calls.",
+    tags: ["C++", "Win32 API", "Injectors", "Malware Dev"],
+    github: "https://github.com"
+  },
+  {
+    title: "K-Probe",
+    description: "A Linux Kernel Module (LKM) monitoring write system calls on specific files to detect unauthorized edits.",
+    tags: ["C", "Linux Kernel", "Rootkits", "Audit"],
+    github: "https://github.com"
+  },
+  {
+    title: "Noir Trace Portfolio",
+    description: "Source code of this developer portfolio website built with Astro, Tailwind CSS, Decap CMS, and Pagefind search.",
+    tags: ["Astro", "TailwindCSS", "Pagefind", "DecapCMS"],
+    github: "https://github.com",
+    live: "/"
+  }
+];
+---
+
+<Layout title="Projects // Noir Trace" description="Complete archive of security tooling, systems code, and open source repositories.">
+  <section>
+    <!-- Page Header -->
+    <div class="mb-12 border-b border-neutral-900 pb-8">
+      <div class="inline-block border border-accent/30 bg-accent/5 px-2.5 py-1 text-[10px] font-mono tracking-widest text-accent uppercase mb-3">
+        Archive ID: #0087-ARCHIVE
+      </div>
+      <h1 class="font-display font-bold text-3xl tracking-tight mb-2">Systems Archive</h1>
+      <p class="font-mono text-xs text-neutral-400 uppercase tracking-widest">Active repositories & security proofs of concept</p>
+    </div>
+
+    <!-- Grid Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {projects.map(project => (
+        <div class="terminal-card p-6 flex flex-col justify-between rounded-sm">
+          <div>
+            <h3 class="font-display font-bold text-sm tracking-wide text-white mb-2">{project.title}</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed mb-4">{project.description}</p>
+          </div>
+          
+          <div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              {project.tags.map(tag => (
+                <span class="bg-bg-dark border border-neutral-800 text-[10px] font-mono px-2 py-0.5 text-neutral-400 rounded-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            
+            <div class="flex items-center space-x-3 font-mono text-[10px] uppercase">
+              <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-accent hover:text-white transition-colors">
+                [ GITHUB ]
+              </a>
+              {project.live && (
+                <span class="text-neutral-700">//</span>
+                <a href={project.live} class="text-neutral-400 hover:text-white transition-colors">
+                  [ LIVE / DEMO ]
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

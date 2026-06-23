@@ -1,0 +1,23 @@
+---
+import BlogPostCard from './BlogPostCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="mt-16 pt-8 border-t border-neutral-900" data-pagefind-ignore>
+    <h2 class="font-display font-bold text-sm uppercase tracking-widest mb-6 text-white">
+      <span class="text-accent">//</span> Related Writeups
+    </h2>
+    <div class="space-y-4">
+      {posts.map((post) => (
+        <BlogPostCard post={post} />
+      ))}
+    </div>
+  </section>
+)}

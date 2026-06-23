@@ -1,0 +1,177 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch non-draft blog posts, sorted by date desc, limited to latest 3
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const featuredProjects = [
+  {
+    title: "Athena Core",
+    description: "A high-performance shellcode execution framework built in Rust, featuring dynamic call obscuring and memory encryption.",
+    tags: ["Rust", "Windows API", "Evasion", "Security"],
+    github: "https://github.com",
+  },
+  {
+    title: "PacketSentry",
+    description: "A lightweight network packet inspection daemon written in Go, focusing on raw socket parsing and real-time anomaly detection.",
+    tags: ["Go", "Linux", "Networking", "Security"],
+    github: "https://github.com",
+    live: "https://example.com"
+  },
+  {
+    title: "FirmAudit CLI",
+    description: "An automated firmware parsing and analysis tool chain that unpacks image blocks and scans binary paths for CVE vulnerabilities.",
+    tags: ["Python", "Binwalk", "Static Analysis", "IoT"],
+    github: "https://github.com",
+  }
+];
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <section class="mb-16 md:mb-24">
+    <div class="max-w-3xl">
+      <div class="inline-block border border-[#B3001B]/30 bg-[#B3001B]/5 px-2.5 py-1 text-[10px] font-mono tracking-widest text-[#B3001B] uppercase mb-4">
+        Trace ID: #9821-SECURE
+      </div>
+      <h1 class="font-display font-bold text-3xl md:text-5xl tracking-tight mb-3">
+        Hello, I'm <span class="text-glow text-white">Alexander Noir</span>
+      </h1>
+      <p class="font-mono text-sm md:text-base text-neutral-400 mb-6 uppercase tracking-wider">
+        <span class="typewriter text-white font-semibold">Developer / Security Researcher</span>
+      </p>
+      
+      <p class="text-sm md:text-base text-neutral-300 leading-relaxed mb-8">
+        Specializing in low-level reverse engineering, hardware security audits, and evasion mechanics. I build security tooling and write detailed technical guides detailing vulnerability discoveries.
+      </p>
+      
+      <div class="flex flex-wrap gap-4 font-mono text-xs uppercase">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-accent px-5 py-2.5 flex items-center space-x-2 border border-[#B3001B] rounded-sm">
+          <span>[ GitHub Profile ]</span>
+        </a>
+        <a href="/resume.pdf" class="border border-neutral-800 hover:border-neutral-500 text-neutral-300 hover:text-white px-5 py-2.5 transition-colors rounded-sm">
+          [ Download Resume ]
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview Section -->
+  <section class="mb-20 border-t border-neutral-900 pt-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-1">
+        <h2 class="font-display font-bold text-lg uppercase tracking-wider text-glow text-white">
+          <span class="text-[#B3001B] font-bold">//</span> About System
+        </h2>
+        <p class="font-mono text-[10px] text-neutral-500 uppercase mt-1">MODULE_INFO // LOG_STATUS</p>
+      </div>
+      
+      <div class="md:col-span-2 text-sm md:text-base text-neutral-300 space-y-4">
+        <p class="leading-relaxed">
+          I conduct binary analysis, firmware unpacking, and custom tool development. My research focuses on uncovering logical errors in embedded systems and evaluating modern security endpoints.
+        </p>
+        <p class="leading-relaxed">
+          Based on the principles of open research and responsible disclosure, I document my experiments and writeups for the security community.
+        </p>
+        <div class="pt-2 font-mono text-xs uppercase">
+          <a href="/about" class="text-neutral-400 hover:text-white transition-colors">
+            Read complete system dossier <span class="text-[#B3001B]">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects Section -->
+  <section class="mb-20 border-t border-neutral-900 pt-16">
+    <div class="flex flex-col md:flex-row md:items-baseline justify-between mb-8">
+      <div>
+        <h2 class="font-display font-bold text-lg uppercase tracking-wider text-glow text-white">
+          <span class="text-[#B3001B] font-bold">//</span> Active Repositories
+        </h2>
+        <p class="font-mono text-[10px] text-neutral-500 uppercase mt-1">SECURE_FILES // PORTFOLIO</p>
+      </div>
+      <a href="/projects" class="font-mono text-xs text-neutral-400 hover:text-white transition-colors mt-2 md:mt-0 uppercase">
+        View all projects <span class="text-[#B3001B]">&rarr;</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {featuredProjects.map(project => (
+        <div class="terminal-card p-6 flex flex-col justify-between rounded-sm">
+          <div>
+            <h3 class="font-display font-bold text-sm tracking-wide text-white mb-2">{project.title}</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed mb-4">{project.description}</p>
+          </div>
+          
+          <div>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              {project.tags.map(tag => (
+                <span class="bg-bg-dark border border-neutral-800 text-[10px] font-mono px-2 py-0.5 text-neutral-400 rounded-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            
+            <div class="flex items-center space-x-3 font-mono text-[10px] uppercase">
+              <a href={project.github} target="_blank" rel="noopener noreferrer" class="text-[#B3001B] hover:text-white transition-colors">
+                [ GITHUB ]
+              </a>
+              {project.live && (
+                <span class="text-neutral-700">//</span>
+                <a href={project.live} target="_blank" rel="noopener noreferrer" class="text-neutral-400 hover:text-white transition-colors">
+                  [ LIVE ]
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Latest Blog Posts Section -->
+  <section class="mb-8 border-t border-neutral-900 pt-16">
+    <div class="flex flex-col md:flex-row md:items-baseline justify-between mb-8">
+      <div>
+        <h2 class="font-display font-bold text-lg uppercase tracking-wider text-glow text-white">
+          <span class="text-[#B3001B] font-bold">//</span> Forensic Writeups
+        </h2>
+        <p class="font-mono text-[10px] text-neutral-500 uppercase mt-1">LOGS // BLOG_WRITEUPS</p>
+      </div>
+      <a href="/blog" class="font-mono text-xs text-neutral-400 hover:text-white transition-colors mt-2 md:mt-0 uppercase">
+        Browse all writeups <span class="text-[#B3001B]">&rarr;</span>
+      </a>
+    </div>
+
+    <div class="space-y-6">
+      {posts.map(post => (
+        <a href={`/blog/${post.id}/`} class="block terminal-card p-6 rounded-sm relative overflow-hidden group">
+          <div class="absolute left-0 top-0 w-1 h-full bg-neutral-900 group-hover:bg-[#B3001B] transition-colors"></div>
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center space-x-3 text-[10px] font-mono text-neutral-400 uppercase mb-2">
+                <span>{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                <span class="text-neutral-700">//</span>
+                <span class="text-[#B3001B]">{post.data.category}</span>
+              </div>
+              <h3 class="font-display font-bold text-base text-white group-hover:text-glow transition-all">{post.data.title}</h3>
+              <p class="text-xs text-neutral-400 mt-1 max-w-2xl leading-relaxed">{post.data.description}</p>
+            </div>
+            
+            <div class="flex flex-wrap gap-1.5 md:justify-end">
+              {post.data.tags.slice(0, 3).map(tag => (
+                <span class="bg-bg-dark border border-neutral-950 text-[9px] font-mono px-2 py-0.5 text-neutral-500 rounded-sm">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

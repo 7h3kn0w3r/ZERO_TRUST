@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Noir Trace">
+  <rect width="1200" height="630" fill="#0B0B0F"/>
+  <rect x="64" y="64" width="1072" height="502" fill="none" stroke="#1F1F2E" stroke-width="2"/>
+  <rect x="64" y="64" width="1072" height="4" fill="#B3001B"/>
+  <text x="96" y="180" fill="#B3001B" font-family="Arial, sans-serif" font-size="24" letter-spacing="8">NOIR TRACE</text>
+  <text x="96" y="260" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="56" font-weight="700">Developer / Security Researcher</text>
+  <text x="96" y="330" fill="#A8A8A8" font-family="Arial, sans-serif" font-size="28">Portfolio, projects, and technical writeups.</text>
+  <text x="96" y="520" fill="#A8A8A8" font-family="Arial, sans-serif" font-size="20">noir-trace.github.io</text>
+</svg>

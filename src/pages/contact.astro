@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Use a placeholder Formspree endpoint that the user can replace
+const formspreeEndpoint = "https://formspree.io/f/xjgqkkez";
+---
+
+<Layout title="Contact // Noir Trace" description="Secure transmission channel. Contact Alexander Noir for audits, development, or research queries.">
+  <section class="max-w-xl mx-auto">
+    <!-- Page Header -->
+    <div class="mb-12 border-b border-neutral-900 pb-8">
+      <div class="inline-block border border-accent/30 bg-accent/5 px-2.5 py-1 text-[10px] font-mono tracking-widest text-accent uppercase mb-3">
+        Terminal ID: #0004-COMMUNICATION
+      </div>
+      <h1 class="font-display font-bold text-3xl tracking-tight mb-2">Secure Channel</h1>
+      <p class="font-mono text-xs text-neutral-400 uppercase tracking-widest">Transmit secure message packets</p>
+    </div>
+
+    <!-- Contact Form -->
+    <form 
+      action={formspreeEndpoint} 
+      method="POST" 
+      class="space-y-6 font-mono text-xs"
+    >
+      <div>
+        <label for="name" class="block text-neutral-400 uppercase tracking-wider mb-2">
+          Sender Name <span class="text-accent">*</span>
+        </label>
+        <input 
+          type="text" 
+          name="name" 
+          id="name" 
+          required 
+          autocomplete="name"
+          placeholder="e.g. Operator"
+          class="w-full bg-[#1F1F2E]/60 border border-neutral-800 focus:border-accent text-white px-4 py-3 rounded-sm focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-neutral-400 uppercase tracking-wider mb-2">
+          Return Address (Email) <span class="text-accent">*</span>
+        </label>
+        <input 
+          type="email" 
+          name="_replyto" 
+          id="email" 
+          required 
+          autocomplete="email"
+          placeholder="e.g. operator@domain.local"
+          class="w-full bg-[#1F1F2E]/60 border border-neutral-800 focus:border-accent text-white px-4 py-3 rounded-sm focus:outline-none transition-colors"
+        />
+      </div>
+
+      <div>
+        <label for="message" class="block text-neutral-400 uppercase tracking-wider mb-2">
+          Message Payload <span class="text-accent">*</span>
+        </label>
+        <textarea 
+          name="message" 
+          id="message" 
+          rows="6" 
+          required
+          placeholder="Enter message text packet here..."
+          class="w-full bg-[#1F1F2E]/60 border border-neutral-800 focus:border-accent text-white px-4 py-3 rounded-sm focus:outline-none transition-colors resize-y"
+        ></textarea>
+      </div>
+
+      <!-- Anti-spam hidden field -->
+      <input type="text" name="_gotcha" style="display:none" />
+
+      <div>
+        <button 
+          type="submit" 
+          class="w-full btn-accent py-3 px-6 text-center cursor-pointer border border-[#B3001B] font-display font-semibold uppercase tracking-widest text-sm hover:shadow-[0_0_15px_rgba(179,0,27,0.4)] transition-all rounded-sm"
+        >
+          [ Transmit Packet ]
+        </button>
+      </div>
+    </form>
+    
+    <!-- Info Dossier box -->
+    <div class="mt-12 border border-neutral-900 bg-[#1F1F2E]/10 p-5 rounded-sm font-mono text-[10px] text-neutral-500 space-y-2">
+      <p class="font-bold text-neutral-400 uppercase tracking-wide">Transmission Log Info:</p>
+      <p>&rsaquo; Submissions are securely processed via Formspree servers.</p>
+      <p>&rsaquo; Packets are forwarded to administrative inbox upon receipt.</p>
+      <p>&rsaquo; Response times vary depending on active research window constraints.</p>
+    </div>
+  </section>
+</Layout>

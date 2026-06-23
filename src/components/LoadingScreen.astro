@@ -1,0 +1,133 @@
+<style is:inline>
+  html.skip-intro #loading-screen {
+    display: none !important;
+  }
+</style>
+
+<div id="loading-screen" class="fixed inset-0 z-[99999] bg-bg-dark flex flex-col items-center justify-center font-sans p-4 select-none">
+  <div class="max-w-md w-full border border-neutral-800 bg-surface/95 p-6 rounded shadow-2xl relative overflow-hidden backdrop-blur-sm">
+    <div class="absolute top-0 left-0 w-full h-[2px] bg-accent"></div>
+
+    <div class="flex items-center justify-between mb-4 border-b border-neutral-800 pb-2 text-[10px] text-text-secondary uppercase tracking-widest">
+      <span>System Boot // Trace Protocol</span>
+      <span id="loader-progress">0%</span>
+    </div>
+
+    <div id="loader-log" class="text-xs text-white space-y-1.5 min-h-[140px] font-sans leading-relaxed"></div>
+
+    <div class="mt-6 border-t border-neutral-800 pt-3 flex justify-between items-center text-[9px] text-text-secondary uppercase tracking-wider font-sans">
+      <span>[Click / Press any key to skip]</span>
+      <span class="text-accent loader-status">Online</span>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    const loader = document.getElementById('loading-screen');
+    if (!loader || document.documentElement.classList.contains('skip-intro')) {
+      if (loader) loader.remove();
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      loader.remove();
+      return;
+    }
+
+    const logs = [
+      'Establishing link with host node...',
+      'Resolving system file pathways...',
+      'Decrypting index structures...',
+      'Auditing active connections...',
+      'Compiling security footprints...',
+      'Trace check complete. System secure.',
+      'Handshake verified. Welcome.'
+    ];
+
+    const logContainer = document.getElementById('loader-log');
+    const progressEl = document.getElementById('loader-progress');
+    let logIndex = 0;
+    let progress = 0;
+    let dismissed = false;
+
+    function addLogLine(text) {
+      if (!logContainer) return;
+      const line = document.createElement('p');
+      line.className = 'text-neutral-300';
+      line.innerHTML = '<span class="text-accent font-bold">&gt;</span> ' + text;
+      logContainer.appendChild(line);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function dismissLoader() {
+      if (dismissed) return;
+      dismissed = true;
+      clearInterval(progressInterval);
+      clearTimeout(maxTimeout);
+
+      try {
+        localStorage.setItem('noir_trace_seen_intro', 'true');
+      } catch (e) {}
+
+      loader.style.transition = 'opacity 0.3s ease-out';
+      loader.style.opacity = '0';
+      setTimeout(function() {
+        loader.remove();
+      }, 300);
+
+      window.removeEventListener('keydown', handleSkip);
+      window.removeEventListener('click', handleSkip);
+      window.removeEventListener('touchstart', handleSkip);
+    }
+
+    function handleSkip() {
+      dismissLoader();
+    }
+
+    const progressInterval = setInterval(function() {
+      progress += Math.floor(Math.random() * 12) + 6;
+      if (progress >= 100) {
+        progress = 100;
+        while (logIndex < logs.length) {
+          addLogLine(logs[logIndex]);
+          logIndex++;
+        }
+        dismissLoader();
+        return;
+      }
+
+      if (progressEl) progressEl.textContent = progress + '%';
+
+      const targetIndex = Math.floor((progress / 100) * logs.length);
+      while (logIndex < targetIndex && logIndex < logs.length) {
+        addLogLine(logs[logIndex]);
+        logIndex++;
+      }
+    }, 120);
+
+    const maxTimeout = setTimeout(dismissLoader, 2800);
+
+    window.addEventListener('keydown', handleSkip);
+    window.addEventListener('click', handleSkip);
+    window.addEventListener('touchstart', handleSkip);
+  })();
+</script>
+
+<style>
+  .loader-status {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loader-status {
+      animation: none;
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+</style>

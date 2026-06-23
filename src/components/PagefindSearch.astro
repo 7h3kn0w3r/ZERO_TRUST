@@ -1,0 +1,109 @@
+<div class="pagefind-search-container border border-neutral-800 bg-[#1F1F2E]/50 p-4 rounded-sm relative overflow-hidden backdrop-blur-sm">
+  <div class="absolute top-0 left-0 w-1 h-full bg-[#B3001B]"></div>
+  <div id="search"></div>
+</div>
+
+<!-- Load Pagefind assets statically -->
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+
+<script is:inline>
+  function initPagefind() {
+    if (typeof PagefindUI !== 'undefined') {
+      new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        baseUrl: "/",
+        bundlePath: "/pagefind/",
+        showImages: false,
+        translations: {
+          placeholder: "Search writeups, tags, tools, or footprint logs..."
+        }
+      });
+    } else {
+      const searchEl = document.getElementById('search');
+      if (searchEl) {
+        searchEl.innerHTML = `
+          <div class="text-neutral-400 font-mono text-xs space-y-1.5 p-2">
+            <p><span class="text-[#B3001B] font-bold">[WARN]</span> SEARCH ENGINE OFFLINE: Index files not found in dev environment.</p>
+            <p class="text-[10px] text-neutral-500">Run "npm run build" and "npx pagefind --site dist" to generate indices and preview search.</p>
+          </div>
+        `;
+      }
+    }
+  }
+
+  // Handle load and View Transitions if added later
+  window.addEventListener('DOMContentLoaded', initPagefind);
+  document.addEventListener('astro:after-swap', initPagefind);
+</script>
+
+<style is:global>
+  /* Custom styled Pagefind UI to fit the forensic theme */
+  .pagefind-ui {
+    --pagefind-ui-primary: #FFFFFF !important;
+    --pagefind-ui-text: #FFFFFF !important;
+    --pagefind-ui-background: #1F1F2E !important;
+    --pagefind-ui-border: rgba(255, 255, 255, 0.08) !important;
+    --pagefind-ui-tag: #B3001B !important;
+    font-family: var(--font-sans) !important;
+  }
+  
+  .pagefind-ui .pagefind-ui__search-clear {
+    background-color: #B3001B !important;
+    color: white !important;
+  }
+  
+  .pagefind-ui .pagefind-ui__search-input {
+    border-radius: 2px !important;
+    font-size: 0.875rem !important;
+    font-family: var(--font-display) !important;
+    letter-spacing: 0.025em !important;
+  }
+  
+  .pagefind-ui .pagefind-ui__result-link {
+    color: #FFFFFF !important;
+    font-family: var(--font-display) !important;
+    font-weight: 500 !important;
+  }
+  
+  .pagefind-ui .pagefind-ui__result-link:hover {
+    color: #B3001B !important;
+    text-decoration: none !important;
+  }
+
+  .pagefind-ui .pagefind-ui__result-excerpt {
+    color: #A8A8A8 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .pagefind-ui .pagefind-ui__result {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 1rem 0 !important;
+  }
+  
+  .pagefind-ui .pagefind-ui__message {
+    font-family: var(--font-display) !important;
+    font-size: 0.75rem !important;
+    color: #A8A8A8 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .pagefind-ui .pagefind-ui__button {
+    border-color: #B3001B !important;
+    color: white !important;
+    background-color: transparent !important;
+    font-family: var(--font-display) !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+  
+  .pagefind-ui .pagefind-ui__button:hover {
+    background-color: #B3001B !important;
+    box-shadow: 0 0 10px rgba(179, 0, 27, 0.5) !important;
+  }
+</style>

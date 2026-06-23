@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const skills = [
+  { category: "Vulnerability Research", items: ["Binary Exploitation (x86/MIPS)", "Reverse Engineering (Ghidra, IDA)", "Firmware Auditing", "Static/Dynamic Analysis"] },
+  { category: "Security Evasion", items: ["User-Mode EDR Evasion", "Process Injection Tactics", "Windows / Linux Kernel Hooks", "Obfuscation & Cryptography"] },
+  { category: "Systems Development", items: ["Rust (Low-Level / Tooling)", "Go (Networking / Concurrency)", "C / C++ (Win32 / System)", "Python (Automation)"] },
+  { category: "Infrastructure & Tools", items: ["Linux Kernel Security", "Docker & Kubernetes Security", "CI/CD Hardening", "Raw Socket Analysis (Wireshark)"] }
+];
+
+const timeline = [
+  {
+    date: "2024 - Present",
+    role: "Senior Security Analyst",
+    company: "HexaShield Security",
+    description: "Conducting grey-box firmware evaluations, custom threat simulation tools development, and Red Team operations auditing embedded systems."
+  },
+  {
+    date: "2022 - 2024",
+    role: "Vulnerability Engineer",
+    company: "ZeroDay Labs",
+    description: "Reverse engineered commercial SoHo routers and IoT devices. Discovered and patched multiple CVEs in administrative network services."
+  },
+  {
+    date: "2020 - 2022",
+    role: "Systems Developer",
+    company: "Apex Systems",
+    description: "Developed backend security logging infrastructure and custom network packet capture monitors in Rust and Go."
+  }
+];
+---
+
+<Layout title="About // Noir Trace" description="Biography, technical skills matrix, and professional footprint timeline.">
+  <section class="max-w-3xl">
+    <!-- Dossier Header -->
+    <div class="mb-12 border-b border-neutral-900 pb-8">
+      <div class="inline-block border border-accent/30 bg-accent/5 px-2.5 py-1 text-[10px] font-mono tracking-widest text-accent uppercase mb-3">
+        Dossier Type: PERSONNEL_FILE_0x44
+      </div>
+      <h1 class="font-display font-bold text-3xl tracking-tight mb-2">Personnel Dossier</h1>
+      <p class="font-mono text-xs text-neutral-400 uppercase tracking-widest">Operator: Alexander Noir</p>
+    </div>
+
+    <!-- Biography -->
+    <div class="text-sm md:text-base text-neutral-300 space-y-6 leading-relaxed mb-16">
+      <p>
+        I am a developer and security researcher focused on exploring the boundary between system development and vulnerability analysis. My work spans deep dive firmware reverse engineering, protocol audits, and low-level code compilation.
+      </p>
+      <p>
+        I have a strong passion for writing secure, performant systems in <span class="text-white font-mono">Rust</span> and <span class="text-white font-mono">Go</span>, alongside writing proof-of-concept exploits to test modern endpoint defenses.
+      </p>
+      <p>
+        Currently, I collaborate with vendors under responsible disclosure frameworks to secure their supply chains and embedded appliances, while occasionally participating in high-level CTF competitions.
+      </p>
+    </div>
+
+    <!-- Technical Skills Matrix -->
+    <div class="mb-16">
+      <h2 class="font-display font-bold text-sm uppercase tracking-widest mb-6 text-white border-b border-neutral-900 pb-2">
+        <span class="text-accent">//</span> Skill Matrix
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {skills.map(group => (
+          <div class="border border-neutral-900 bg-[#1F1F2E]/30 p-5 rounded-sm">
+            <h3 class="font-display font-bold text-xs text-white uppercase tracking-wider mb-3">{group.category}</h3>
+            <ul class="space-y-1.5 font-mono text-xs text-neutral-400">
+              {group.items.map(item => (
+                <li class="flex items-center">
+                  <span class="text-accent mr-2 font-bold">-</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Career Footprint -->
+    <div>
+      <h2 class="font-display font-bold text-sm uppercase tracking-widest mb-8 text-white border-b border-neutral-900 pb-2">
+        <span class="text-accent">//</span> Footprint Timeline
+      </h2>
+      
+      <div class="relative border-l border-neutral-800 ml-3 pl-6 space-y-10 font-mono">
+        {timeline.map(item => (
+          <div class="relative">
+            <!-- Timeline dot -->
+            <div class="absolute -left-[31px] top-1.5 w-2.5 h-2.5 bg-bg-dark border border-accent rounded-full flex items-center justify-center">
+              <div class="w-1 h-1 bg-accent rounded-full"></div>
+            </div>
+            
+            <div class="text-[10px] text-accent font-bold mb-1 uppercase tracking-wider">{item.date}</div>
+            <h3 class="text-sm font-bold text-white uppercase">{item.role}</h3>
+            <div class="text-xs text-neutral-400 uppercase mt-0.5">{item.company}</div>
+            <p class="text-xs text-neutral-400 font-sans mt-3 leading-relaxed max-w-2xl">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

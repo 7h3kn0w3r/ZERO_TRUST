@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { getPublishedPosts, paginatePosts, POSTS_PER_PAGE } from '../../utils/blog';
+import BlogListing from '../../components/BlogListing.astro';
+
+const allPosts = getPublishedPosts(await getCollection('blog'));
+const { items, currentPage, totalPages } = paginatePosts(allPosts, 1, POSTS_PER_PAGE);
+
+const categories = ['All', ...new Set(allPosts.map((post) => post.data.category))];
+const tags = ['All', ...new Set(allPosts.flatMap((post) => post.data.tags))];
+---
+
+<Layout title="Writeups // Noir Trace" description="Technical security writeups, reverse engineering logs, and malware analysis documents.">
+  <BlogListing
+    posts={items}
+    categories={categories}
+    tags={tags}
+    currentPage={currentPage}
+    totalPages={totalPages}
+  />
+</Layout>

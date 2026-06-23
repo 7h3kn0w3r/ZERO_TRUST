@@ -1,0 +1,164 @@
+---
+import BlogPostCard from './BlogPostCard.astro';
+import PagefindSearch from './PagefindSearch.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  categories: string[];
+  tags: string[];
+  currentPage: number;
+  totalPages: number;
+  pageBasePath?: string;
+}
+
+const {
+  posts,
+  categories,
+  tags,
+  currentPage,
+  totalPages,
+  pageBasePath = '/blog',
+} = Astro.props;
+
+function pageUrl(page: number): string {
+  if (page <= 1) return `${pageBasePath}/`;
+  return `${pageBasePath}/page/${page}/`;
+}
+---
+
+<section class="max-w-4xl mx-auto">
+  <div class="mb-12 border-b border-neutral-900 pb-8">
+    <div class="inline-block border border-accent/30 bg-accent/5 px-2.5 py-1 text-[10px] font-sans tracking-widest text-accent uppercase mb-3">
+      Engine ID: #0003-WRITEUPS
+    </div>
+    <h1 class="font-display font-bold text-3xl tracking-tight mb-2">Technical Writeups</h1>
+    <p class="font-sans text-xs text-text-secondary uppercase tracking-widest">Static file database // Forensic documentation</p>
+  </div>
+
+  <div class="mb-12" data-pagefind-ignore>
+    <PagefindSearch />
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8" data-pagefind-ignore>
+    <aside class="lg:col-span-1 space-y-8">
+      <div>
+        <h3 class="font-display font-bold text-[10px] uppercase tracking-widest text-text-secondary mb-3">
+          Categories
+        </h3>
+        <div class="flex flex-wrap lg:flex-col gap-2 font-sans text-xs">
+          {categories.map((category) => (
+            <button
+              type="button"
+              class="category-btn text-left px-3 py-1.5 border border-neutral-800 hover:border-accent text-text-secondary hover:text-white uppercase transition-all rounded-sm duration-150"
+              data-category={category}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-display font-bold text-[10px] uppercase tracking-widest text-text-secondary mb-3">
+          Tags
+        </h3>
+        <div class="flex flex-wrap gap-2 font-sans text-[10px]">
+          {tags.map((tag) => (
+            <button
+              type="button"
+              class="tag-btn px-2 py-1 border border-neutral-900 text-text-secondary hover:border-accent hover:text-white uppercase transition-all rounded-sm"
+              data-tag={tag}
+            >
+              #{tag}
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <div class="lg:col-span-3">
+      <div id="posts-container" class="space-y-6">
+        {posts.map((post) => (
+          <BlogPostCard post={post} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <nav class="mt-10 flex items-center justify-between font-sans text-xs uppercase tracking-wider" aria-label="Blog pagination">
+          {currentPage > 1 ? (
+            <a href={pageUrl(currentPage - 1)} class="text-text-secondary hover:text-white transition-colors">
+              &larr; Previous
+            </a>
+          ) : (
+            <span class="text-neutral-700">Start</span>
+          )}
+
+          <span class="text-text-secondary">
+            Page {currentPage} / {totalPages}
+          </span>
+
+          {currentPage < totalPages ? (
+            <a href={pageUrl(currentPage + 1)} class="text-text-secondary hover:text-white transition-colors">
+              Next &rarr;
+            </a>
+          ) : (
+            <span class="text-neutral-700">End</span>
+          )}
+        </nav>
+      )}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const tagButtons = document.querySelectorAll('.tag-btn');
+    const cards = document.querySelectorAll('.post-card');
+
+    let activeCategory = 'All';
+    let activeTag = 'All';
+
+    function setActiveButton(buttons, active, attr) {
+      buttons.forEach((btn) => {
+        const value = btn.getAttribute(attr);
+        const isActive = value === active;
+        btn.classList.toggle('border-accent', isActive);
+        btn.classList.toggle('text-white', isActive);
+        btn.classList.toggle('bg-accent/5', isActive);
+        btn.classList.toggle('border-neutral-800', !isActive);
+        btn.classList.toggle('text-text-secondary', !isActive);
+      });
+    }
+
+    function applyFilters() {
+      cards.forEach((card) => {
+        const cardCategory = card.getAttribute('data-category');
+        const cardTags = (card.getAttribute('data-tags') || '').split(',');
+        const categoryMatch = activeCategory === 'All' || cardCategory === activeCategory;
+        const tagMatch = activeTag === 'All' || cardTags.includes(activeTag);
+        card.style.display = categoryMatch && tagMatch ? 'block' : 'none';
+      });
+    }
+
+    setActiveButton(categoryButtons, 'All', 'data-category');
+    setActiveButton(tagButtons, 'All', 'data-tag');
+
+    categoryButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeCategory = button.getAttribute('data-category') || 'All';
+        setActiveButton(categoryButtons, activeCategory, 'data-category');
+        applyFilters();
+      });
+    });
+
+    tagButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeTag = button.getAttribute('data-tag') || 'All';
+        setActiveButton(tagButtons, activeTag, 'data-tag');
+        applyFilters();
+      });
+    });
+  })();
+</script>

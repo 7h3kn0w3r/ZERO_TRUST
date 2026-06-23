@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getPostUrl } from '../utils/blog';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+---
+
+<a href={getPostUrl(post)} class="post-card block border border-neutral-900 bg-surface/30 p-6 rounded-sm relative overflow-hidden group hover:border-accent/40 transition-colors" data-category={post.data.category} data-tags={post.data.tags.join(',')}>
+  <div class="absolute left-0 top-0 w-1 h-full bg-neutral-950 group-hover:bg-accent transition-colors"></div>
+
+  <div class="flex items-center space-x-3 text-[10px] font-sans uppercase mb-2 text-text-secondary tracking-wider">
+    <span>{post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+    <span>//</span>
+    <span class="text-accent">{post.data.category}</span>
+  </div>
+
+  <h2 class="font-display font-bold text-base text-white mb-2 group-hover:text-glow transition-all">
+    {post.data.title}
+  </h2>
+
+  <p class="text-xs text-text-secondary leading-relaxed mb-4">
+    {post.data.description}
+  </p>
+
+  <div class="flex flex-wrap gap-1.5 items-center">
+    {post.data.tags.map((tag) => (
+      <span class="bg-bg-dark border border-neutral-950 text-[9px] font-sans px-2 py-0.5 text-text-secondary rounded-sm">
+        #{tag}
+      </span>
+    ))}
+  </div>
+</a>
